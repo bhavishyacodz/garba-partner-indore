@@ -50,27 +50,20 @@
     </div>
   </div></section>
   <section class="wrap" id="join">
-    <div class="section-head"><div class="kicker">Quick registration</div><h2>Find My Garba Partner</h2><p class="sub">Answer a few simple questions. Your answers will be prepared as a message for Instagram—nothing is saved on this website.</p></div>
+    <div class="section-head"><div class="kicker">Quick registration</div><h2>Find My Garba Partner</h2><p class="sub">Just a few quick answers. Send your request to us on Instagram, and we’ll contact you if a suitable option becomes available.</p></div>
     <form class="interest-form" id="interestForm">
       <div class="form-grid">
-        <div class="form-step">Step 1 · A little about you</div>
-        <div class="field"><label for="adult">Are you 18 or older? *</label><select id="adult" name="adult" required><option value="">Choose one</option><option value="Yes, I am 18 or older">Yes, I'm 18+</option><option value="No, I am under 18">I'm under 18</option></select></div>
-        <div class="field"><label for="city">Your city *</label><input id="city" name="city" required maxlength="60" placeholder="e.g. Indore"></div>
+        <div class="field"><label for="adult">Are you 18 or older? *</label><select id="adult" name="adult" required><option value="">Choose one</option><option value="yes">Yes, I'm 18+</option><option value="no">No, I'm under 18</option></select></div>
         <div class="field"><label for="looking">What are you looking for? *</label><select id="looking" name="looking" required><option value="">Choose one</option><option>Garba dance partner</option><option>Garba group</option><option>Someone to attend Garba events with</option></select></div>
         <div class="field"><label for="preference">Preferred partner *</label><select id="preference" name="preference" required><option value="">Choose one</option><option>Female partner</option><option>Male partner</option><option>No preference</option></select></div>
-        <div class="form-step">Step 2 · Your Garba plans</div>
-        <div class="field"><label for="availability">Available dates / general area</label><input id="availability" name="availability" maxlength="100" placeholder="e.g. weekends, Vijay Nagar"><small>Please don't enter your home address or live location.</small></div>
-        <div class="field"><label for="instagram">Your Instagram username *</label><input id="instagram" name="instagram" required maxlength="40" placeholder="@yourusername"><small>No password or phone number needed.</small></div>
-        <div class="field"><label for="referral">Referral code (optional)</label><input id="referral" name="referral" maxlength="32" placeholder="Enter a code if a friend shared one"><small>Have a referral link? Its code may fill this in automatically.</small></div>
+        <div class="field"><label for="instagram">Your Instagram username *</label><input id="instagram" name="instagram" required maxlength="40" placeholder="@yourusername" autocomplete="username"><small>We’ll use this to contact you.</small></div>
       </div>
-      <div class="form-step" style="margin-top:20px">Step 3 · Review and connect</div>
-      <label class="form-consent"><input type="checkbox" id="consent" required><span>I agree to be contacted about this registration. I understand these answers will be copied into a message I choose to send, and my details won't be shared with potential matches without my permission. *</span></label>
-      <p class="tracking-note" id="sourceNote">Campaign source will be included in your message to help us understand how people find us. It does not track your identity or save your answers on this website.</p>
-      <button class="btn primary" type="submit">Copy message & open my DM ↗</button>
-      <p class="form-help">We will prepare your message, copy it, and open our Instagram DM. Then paste the message into that chat and tap Send. You stay in control—nothing is sent automatically.</p>
+      <label class="form-consent"><input type="checkbox" id="consent" required><span>I agree to be contacted about my request. I understand a match is not guaranteed and any fee will be explained before I decide to pay. *</span></label>
+      <button class="btn primary" type="submit">Continue to Submit Request ↗</button>
+      <p class="form-help">Next, Instagram will open with your message ready. Tap Send to submit your request. We cannot receive it until you send that message.</p>
       <div class="form-result" id="formResult" role="status" aria-live="polite"></div>
     </form>
-    <div class="notice"><strong style="color:var(--gold)">Privacy note:</strong> This form does not upload or store responses. It creates a message on your device. A photo and phone number are optional and can be discussed later only if needed and with consent.</div>
+    <div class="notice"><strong style="color:var(--gold)">What happens next?</strong> We review requests and contact you if a suitable option becomes available. With the other person's permission, we may show you their photo/profile. You decide whether to proceed; any fee is explained first. This website does not store your answers.</div>
   </section>
   <section class="wrap">
     <div class="section-head"><div class="kicker">Quick answers</div><h2>Before you join</h2></div>
@@ -84,83 +77,63 @@
 </main>
 <footer class="wrap"><span>© <span id="year"></span> Garba Saathi Indore</span><span>Respect • Consent • Community</span></footer>
 <script>
-    document.getElementById('year').textContent=new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
     const queryParams = new URLSearchParams(window.location.search);
-    const allowedSources = {
-      ig_bio: 'Instagram bio',
-      ig_story: 'Instagram Story',
-      ig_post: 'Instagram post',
-      whatsapp: 'WhatsApp',
-      referral: 'Friend referral',
-      poster: 'Poster / QR code',
-      other: 'Other campaign'
-    };
+    const allowedSources = {ig_bio:'Instagram bio',ig_story:'Instagram Story',ig_post:'Instagram post',whatsapp:'WhatsApp',referral:'Friend referral',poster:'Poster / QR code',other:'Other campaign'};
     const rawSource = (queryParams.get('src') || '').toLowerCase().trim();
     const campaignSource = allowedSources[rawSource] || 'Direct / untagged';
-    const sourceNote = document.getElementById('sourceNote');
-    sourceNote.innerHTML = '<strong>How they found us:</strong> ' + campaignSource + '. This label will be added to the message you choose to send.';
-    const referralFromLink = (queryParams.get('ref') || '').trim().replace(/[^a-zA-Z0-9_-]/g, '').slice(0,32);
-    const referralInput = document.getElementById('referral');
-    if (referralFromLink && referralInput) referralInput.value = referralFromLink;
-    document.getElementById('interestForm').addEventListener('submit', async function(event){
+
+    document.getElementById('interestForm').addEventListener('submit', function(event) {
       event.preventDefault();
-      const form = event.currentTarget;
-      const data = new FormData(form);
-      const adult = String(data.get('adult') || '');
+      const data = new FormData(event.currentTarget);
       const result = document.getElementById('formResult');
-      if (adult !== 'Yes, I am 18 or older') {
-        result.textContent = 'Sorry, this pilot is currently for adults aged 18+ only.';
+      if (String(data.get('adult')) !== 'yes') {
+        result.textContent = "Sorry, this service is currently for adults aged 18+ only.";
+        result.classList.add('show');
+        return;
+      }
+      const username = String(data.get('instagram') || '').trim().replace(/^@+/, '');
+      if (!/^[a-zA-Z0-9._]{1,30}$/.test(username)) {
+        result.textContent = "Please enter a valid Instagram username, without spaces.";
         result.classList.add('show');
         return;
       }
       const message = [
-        'Hi Garba Saathi Indore! 🪩 I would like to find a Garba partner.',
+        'Hi Garba Saathi Indore! 🪩 I would like to submit a Garba partner request.',
         '',
-        'Age eligibility: 18+ confirmed',
-        'City: ' + String(data.get('city') || '').trim(),
+        'Age: 18+ confirmed',
         'Looking for: ' + String(data.get('looking') || ''),
         'Preferred partner: ' + String(data.get('preference') || ''),
-        'Availability / general area: ' + (String(data.get('availability') || '').trim() || 'Not provided'),
-        'Instagram username: ' + String(data.get('instagram') || '').trim(),
-        'Lead source: ' + campaignSource,
-        'Referral code: ' + (String(data.get('referral') || '').trim() || 'None provided'),
+        'Instagram username: @' + username,
+        'Found you via: ' + campaignSource,
         '',
-        'I agree to be contacted about this registration. Please explain the next steps and any fee before I decide.',
-        'I understand my personal details should not be shared with a potential match without my permission.'
+        'Please contact me if a suitable option becomes available. I understand a match is not guaranteed and any fee will be explained before I decide to pay.'
       ].join('\n');
-      let copied = false;
-      try {
-        await navigator.clipboard.writeText(message);
-        copied = true;
-      } catch (error) {
-        copied = false;
-      }
       result.replaceChildren();
       const title = document.createElement('div');
       title.className = 'result-title';
-      title.textContent = copied ? '✓ Your message is ready and copied!' : 'Your message is ready!';
+      title.textContent = 'One last step: send your request';
       result.appendChild(title);
       const instructions = document.createElement('p');
       instructions.className = 'result-instructions';
-      instructions.textContent = 'NEXT: Copy the message below if needed, open this DM, paste the message, then tap Send: @garbasaathi.indore. Your message is not sent automatically.';
+      instructions.textContent = 'Your request is not received yet. Tap the button below, then tap Send in Instagram.';
       result.appendChild(instructions);
       const box = document.createElement('textarea');
       box.value = message;
-      box.rows = 10;
+      box.rows = 8;
       box.readOnly = true;
-      box.setAttribute('aria-label','Your prepared Instagram DM message');
+      box.setAttribute('aria-label', 'Your request message');
       result.appendChild(box);
       const copyButton = document.createElement('button');
       copyButton.type = 'button';
       copyButton.className = 'copy-again';
-      copyButton.textContent = 'Copy message again';
-      copyButton.addEventListener('click', async function(){
+      copyButton.textContent = 'Copy message';
+      copyButton.addEventListener('click', async function() {
         try {
           await navigator.clipboard.writeText(message);
           copyButton.textContent = 'Copied ✓';
         } catch (error) {
-          box.focus();
-          box.select();
+          box.focus(); box.select();
           copyButton.textContent = 'Message selected — copy it';
         }
       });
@@ -171,9 +144,10 @@
       dmLink.rel = 'noopener noreferrer';
       dmLink.className = 'btn primary';
       dmLink.style.cssText = 'margin-top:12px;display:inline-flex';
-      dmLink.textContent = 'Open this Instagram DM ↗';
+      dmLink.textContent = 'Open Instagram to Send ↗';
       result.appendChild(dmLink);
       result.classList.add('show');
+      result.scrollIntoView({behavior:'smooth',block:'nearest'});
     });
   </script>
 </body>
