@@ -61,7 +61,7 @@
         <div class="field"><label for="instagram">Your Instagram username *</label><input id="instagram" name="instagram" required maxlength="40" placeholder="@yourusername"><small>No password or phone number needed.</small></div>
       </div>
       <label class="form-consent"><input type="checkbox" id="consent" required><span>I agree to be contacted about this registration. I understand these answers will be copied into a message I choose to send, and my details won't be shared with potential matches without my permission. *</span></label>
-      <button class="btn primary" type="submit">Prepare message & open Instagram ↗</button>
+      <button class="btn primary" type="submit">Copy message & open my DM ↗</button>
       <p class="form-help">After clicking, the message is copied and Instagram opens. Paste the message into a DM to @garbasaathi.indore and tap Send. Review it before sending.</p>
       <div class="form-result" id="formResult" role="status" aria-live="polite"></div>
     </form>
@@ -104,12 +104,12 @@
         'I agree to be contacted about this registration. Please explain the next steps and any fee before I decide.',
         'I understand my personal details should not be shared with a potential match without my permission.'
       ].join('\n');
-      const instagramTab = window.open('https://www.instagram.com/garbasaathi.indore/', '_blank', 'noopener,noreferrer');
+      const instagramTab = window.open('https://ig.me/m/garbasaathi.indore', '_blank', 'noopener,noreferrer');
       try {
         await navigator.clipboard.writeText(message);
-        result.textContent = 'Your message is copied! Instagram should open in a new tab. Open the DM for @garbasaathi.indore, paste the message, review it, and tap Send.';
+        result.textContent = 'Your message is copied! Your Instagram chat should open. Paste the message into the chat, review it, and tap Send.';
       } catch (error) {
-        result.textContent = 'Instagram should open in a new tab. Copy this message from the text box below, then paste it into a DM and tap Send.';
+        result.textContent = 'Your Instagram chat should open. Copy the message from the box below, paste it into the chat, review it, and tap Send.';
         const box = document.createElement('textarea');
         box.value = message;
         box.rows = 10;
